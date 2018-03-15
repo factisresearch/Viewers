@@ -114,7 +114,7 @@ Template.toolbarSection.helpers({
             iconClasses: 'fa fa-trash'
         });
 
-        const buttonData = [];
+        let buttonData = [];
 
         buttonData.push({
             id: 'zoom',
@@ -214,6 +214,7 @@ Template.toolbarSection.helpers({
             subTools: extraTools
         });
 
+        buttonData = buttonData.filter(bd => !OHIF.uiSettings.hiddenTools.find(ht => ht === bd.id));
         return buttonData;
     },
 
