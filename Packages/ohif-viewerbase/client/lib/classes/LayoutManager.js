@@ -14,13 +14,14 @@ export class LayoutManager {
      * @param {DOM element}    parentNode DOM element representing the parent node, which wraps the Layout Manager content
      * @param {Array} studies  Array of studies objects that will be rendered in the Viewer. Each object will be rendered in a div.imageViewerViewport
      */
-    constructor(parentNode, studies) {
+    constructor(parentNode, studies, defaultSeries) {
         OHIF.log.info('LayoutManager constructor');
 
         this.observer = new Tracker.Dependency();
         this.parentNode = parentNode;
         this.studies = studies;
         this.viewportData = [];
+        this.defaultSeries = defaultSeries;
         this.layoutTemplateName = 'gridLayout';
         this.layoutProps = {
             rows: 1,
@@ -85,6 +86,21 @@ export class LayoutManager {
         this.studies.forEach(study => {
             study.displaySets.forEach(dSet => dSet.images.length && displaySets.push(dSet));
         });
+
+        // If default series given,
+        // pick out the default series from the display set
+        if (this.defaultSeries) {
+            let ind;
+            displaySets.forEach((ds, i) => {
+                if (ds.seriesInstanceUid === this.defaultSeries) {
+                    ind = i;
+                }
+            });
+            if (ind != null) {
+                const [removed] = displaySets.splice(ind, 1);
+                displaySets = [removed].concat(displaySets);
+            }
+        }
 
         // Get the display sets that will be appended to the current ones
         let appendix;

@@ -23,7 +23,7 @@ Template.standaloneViewerMain.onCreated(() => {
 Template.standaloneViewerMain.onRendered(() => {
     const instance = Template.instance();
 
-    const studies = instance.data.studies;
+    const { defaultSeries, studies } = instance.data;
     const parentElement = instance.$('#layoutManagerTarget').get(0);
     const studyPrefetcher = OHIF.viewerbase.StudyPrefetcher.getInstance();
     instance.studyPrefetcher = studyPrefetcher;
@@ -32,7 +32,7 @@ Template.standaloneViewerMain.onRendered(() => {
     instance.studyLoadingListener.clear();
     instance.studyLoadingListener.addStudies(studies);
 
-    OHIF.viewerbase.layoutManager = new OHIF.viewerbase.LayoutManager(parentElement, studies);
+    OHIF.viewerbase.layoutManager = new OHIF.viewerbase.LayoutManager(parentElement, studies, defaultSeries);
     OHIF.viewerbase.layoutManager.updateViewports();
 
     studyPrefetcher.setStudies(studies);

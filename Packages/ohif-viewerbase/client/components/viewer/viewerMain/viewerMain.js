@@ -32,7 +32,7 @@ Template.viewerMain.onCreated(() => {
 
 Template.viewerMain.onRendered(() => {
     const instance = Template.instance();
-    const { studies } = instance.data;
+    const { defaultSeries, studies } = instance.data;
     const parentElement = instance.$('#layoutManagerTarget').get(0);
     const studyPrefetcher = StudyPrefetcher.getInstance();
     instance.studyPrefetcher = studyPrefetcher;
@@ -41,7 +41,7 @@ Template.viewerMain.onRendered(() => {
     instance.studyLoadingListener.clear();
     instance.studyLoadingListener.addStudies(studies);
 
-    OHIF.viewerbase.layoutManager = new LayoutManager(parentElement, studies);
+    OHIF.viewerbase.layoutManager = new LayoutManager(parentElement, studies, defaultSeries);
     studyPrefetcher.setStudies(studies);
 
     Session.set('OHIFViewerMainRendered', Math.random());

@@ -50,7 +50,11 @@ if (Meteor.isClient) {
                 }
 
                 OHIF.log.info(JSON.stringify(oReq.responseText, null, 2));
-                this.data = JSON.parse(oReq.responseText);
+                this.data = {
+                    ...JSON.parse(oReq.responseText),
+                    defaultSeries: query.selectedSeries,
+                };
+
 
                 next();
             });
